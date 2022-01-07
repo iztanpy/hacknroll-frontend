@@ -29,12 +29,11 @@ export default function App() {
     setMessages([
       {
         _id: 1,
-        text: 'Hello developer',
+        text: 'Hello',
         createdAt: new Date(),
         user: {
           _id: 2,
           name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
         },
       },
     ])
@@ -45,6 +44,7 @@ export default function App() {
   }, [])
 
   return (
+    <View style={{flex: 1, marginBottom: 100}}>
     <GiftedChat
       messages={messages}
       onSend={messages => onSend(messages)}
@@ -52,5 +52,6 @@ export default function App() {
         _id: 1,
       }}
     />
+    </View>
   )
 }

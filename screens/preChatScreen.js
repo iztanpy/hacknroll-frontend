@@ -19,15 +19,16 @@ import {
   NativeBaseProvider,
 } from "native-base"
 
+import { createStackNavigator } from '@react-navigation/stack';
+import ChatScreen from '../screens/ChatScreen';
 
-export default function App() {
+
+export default function App({navigation}) {
   const [username, setUser] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [usage, setUsage] = useState("");
   const [stress, setStress] = useState("");
-
-  const[iconAnimating, setIcon] = useState(false);
 
 
   return (
@@ -122,7 +123,8 @@ export default function App() {
                         </NativeBaseProvider>
                   </View>
 
-      <TouchableOpacity style={styles.loginBtn}>
+      <TouchableOpacity onPress = { () => navigation.navigate('ChatScreen')}
+      style={styles.loginBtn}>
         <Text>SUBMIT</Text>
       </TouchableOpacity>
     </View>
@@ -132,17 +134,52 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
 
+  image: {
+    marginBottom: 40,
+  },
+
   inputView: {
-    backgroundColor: "#DDDDDD",
+    backgroundColor: "#c0d4ff",
+    borderRadius: 30,
     width: "70%",
     height: 45,
     marginBottom: 20,
+
     alignItems: "flex-start",
   },
 
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
+  },
+
+  forgot_button: {
+    height: 20,
+    marginBottom: 30,
+  },
+
+  signUp_button: {
+      height: 30,
+      padding: 1,
+      marginBottom: 40,
+    },
+
+  loginBtn: {
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    backgroundColor: "#14b9ff",
+  },
 });
+
+

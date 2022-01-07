@@ -12,12 +12,7 @@ import {
 } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import FlashMessage from "react-native-flash-message";
-import { showMessage, hideMessage } from "react-native-flash-message";
-
-
-
-const axios = require('axios').default;
+import signUp from '../screens/signUpScreen';
 
 
 
@@ -35,7 +30,7 @@ export default function profileScreen({ navigation }) {
               <TextInput
                 style={styles.TextInput}
                 placeholder="Username..."
-                placeholderTextColor="#black"
+                placeholderTextColor="white"
                 onChangeText={(username) => setUser(username)}
               />
             </View>
@@ -44,64 +39,25 @@ export default function profileScreen({ navigation }) {
         <TextInput
           style={styles.TextInput}
           placeholder="Password..."
-          placeholderTextColor="#black"
+          placeholderTextColor="white"
           secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
         />
       </View>
 
-      <TouchableOpacity
-      onPress = { () =>
-                          navigation.navigate('Forget')
-                          }>
+      <TouchableOpacity>
         <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress = { () =>
-                    navigation.navigate("signup")
+                    navigation.navigate("signUp")
                  }>
         <Text style={styles.signUp_button}>Sign up</Text>
       </TouchableOpacity>
 
 
       <TouchableOpacity
-      onPress = {
-                    async () =>
-                    axios.post('https://glacial-springs-53214.herokuapp.com/login',{
-                    username: username,
-                    password: password
-                    })
-                    .then(function (response) {
-                    if (response.data === "login"){
-                      showMessage({
-                          message: "success!",
-                          description: "You have been logged in successfully",
-                          type: "success",
-                                          })
-
-                      navigation.navigate("Home", {name: username});
-                      }
-
-                      else (response.data === "password" ){
-                      showMessage({
-                         message: "Incorrect password!",
-                            type: "warning",}
-                      })
-                      }
-
-                      else {
-                       showMessage({
-                          message: "No user found!",
-                          type: "warning",
-                          }
-                      })
-                      }
-
-                      })
-                    .catch(function (error) {
-                                    console.log(error);
-                                    })}
       style={styles.loginBtn}
       >
         <Text>LOGIN</Text>
