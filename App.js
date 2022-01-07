@@ -1,71 +1,154 @@
-import React from "react";
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
+  StyleSheet,
   Text,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
+  View,
+  Image,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import {
+  Select,
   VStack,
-  Code,
-} from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
+  CheckIcon,
+  Center,
+  NativeBaseProvider,
+} from "native-base"
 
-// Define the config
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: "dark",
-};
-
-// extend the theme
-export const theme = extendTheme({ config });
 
 export default function App() {
+  const [username, setUser] = useState("");
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [usage, setUsage] = useState("");
+  const [stress, setStress] = useState("");
+  const [service, setService] = useState("");
+
+  const[iconAnimating, setIcon] = useState(false);
+
+
   return (
-    <NativeBaseProvider>
-      <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Code>App.js</Code>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
-    </NativeBaseProvider>
+    <View style={styles.container}>
+
+      <View style={styles.inputView}>
+              <TextInput
+                style={styles.TextInput}
+                placeholder="How would you like to be addressed?"
+                placeholderTextColor="grey"
+                onChangeText={(username) => setUser(username)}
+              />
+            </View>
+
+      <View style={styles.inputView}>
+      <NativeBaseProvider>
+      <Select
+              selectedValue={gender}
+              minWidth="200"
+              accessibilityLabel="Pronoun"
+              placeholder="Preferred gender pronoun"
+              onValueChange={(itemValue) => setGender(itemValue)}
+            >
+              <Select.Item label="female" value="f" />
+              <Select.Item label="male" value="m" />
+              <Select.Item label="non binary" value="nb" />
+            </Select>
+
+      </NativeBaseProvider>
+      </View>
+
+      <View style={styles.inputView}>
+      <NativeBaseProvider>
+            <Select
+                    selectedValue={age}
+                    minWidth="200"
+                    accessibilityLabel="Age"
+                    placeholder="Your age Range"
+                    onValueChange={(itemValue) => setAge(itemValue)}
+                  >
+                    <Select.Item label="5 - 9 years old " value="5" />
+                    <Select.Item label="10 - 19 years old " value="10" />
+                    <Select.Item label="20 - 29 years old " value="20" />
+                    <Select.Item label="30 - 39 years old " value="30" />
+                    <Select.Item label="40 - 49 years old " value="40" />
+                    <Select.Item label="50 - 59 years old " value="50" />
+                    <Select.Item label="60 - 64 years old " value="60" />
+                    <Select.Item label="65 years old & above " value="65" />
+                  </Select>
+
+            </NativeBaseProvider>
+      </View>
+
+
+      <TouchableOpacity style={styles.loginBtn}>
+        <Text>SUBMIT</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
-// Color Switch Component
-function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  return (
-    <HStack space={2} alignItems="center">
-      <Text>Dark</Text>
-      <Switch
-        isChecked={colorMode === "light" ? true : false}
-        onToggle={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-        }
-      />
-      <Text>Light</Text>
-    </HStack>
-  );
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  image: {
+    marginBottom: 40,
+  },
+
+  TopinputView: {
+      backgroundColor: "#DDDDDD",
+      marginTop: 100,
+      width: "70%",
+      height: 45,
+      marginBottom: 20,
+      alignItems: "flex-start",
+    },
+
+  inputView: {
+    backgroundColor: "#DDDDDD",
+    width: "70%",
+    height: 45,
+    marginBottom: 20,
+    alignItems: "flex-start",
+  },
+
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 5,
+    marginLeft: 20,
+  },
+
+  forgot_button: {
+    height: 20,
+    marginBottom: 30,
+  },
+
+  signUp_button: {
+      height: 20,
+      marginBottom: 30,
+    },
+
+  loginBtn: {
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    backgroundColor: "#F05454",
+  },
+
+  image: {
+  height: 130,
+  width: 230,
+  marginBottom: 30,
+  }
+});
+
