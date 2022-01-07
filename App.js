@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState,useEffect,useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,9 +8,13 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
-  ActivityIndicator,
+  ActivityIndicator, KeyboardAvoidingView
 } from "react-native";
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
+
 import {
+  Input,
   Select,
   VStack,
   CheckIcon,
@@ -19,80 +23,136 @@ import {
 } from "native-base"
 
 
-export default function App() {
-  const [username, setUser] = useState("");
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
-  const [usage, setUsage] = useState("");
-  const [stress, setStress] = useState("");
-  const [service, setService] = useState("");
 
-  const[iconAnimating, setIcon] = useState(false);
+
+export default function App({route, navigation}) {
+  const [email, setEmail] = useState("");
+  const [username, setUser] = useState("");
+  const [nokEmail, setNokEmail] = useState("");
+  const [password,setPassword] = useState("")
+
+  const [forDisplayUsername,setForDisplayUsername] = useState("");
+  const [forDisplayEmail,setForDisplayEmail] = useState("");
 
 
   return (
-    <View style={styles.container}>
-
-      <View style={styles.inputView}>
-              <TextInput
-                style={styles.TextInput}
-                placeholder="How would you like to be addressed?"
-                placeholderTextColor="grey"
-                onChangeText={(username) => setUser(username)}
-              />
-            </View>
-
-      <View style={styles.inputView}>
-      <NativeBaseProvider>
-      <Select
-              selectedValue={gender}
-              minWidth="200"
-              accessibilityLabel="Pronoun"
-              placeholder="Preferred gender pronoun"
-              onValueChange={(itemValue) => setGender(itemValue)}
-            >
-              <Select.Item label="female" value="f" />
-              <Select.Item label="male" value="m" />
-              <Select.Item label="non binary" value="nb" />
-            </Select>
-
-      </NativeBaseProvider>
-      </View>
-
-      <View style={styles.inputView}>
-      <NativeBaseProvider>
-            <Select
-                    selectedValue={age}
-                    minWidth="200"
-                    accessibilityLabel="Age"
-                    placeholder="Your age Range"
-                    onValueChange={(itemValue) => setAge(itemValue)}
-                  >
-                    <Select.Item label="5 - 9 years old " value="5" />
-                    <Select.Item label="10 - 19 years old " value="10" />
-                    <Select.Item label="20 - 29 years old " value="20" />
-                    <Select.Item label="30 - 39 years old " value="30" />
-                    <Select.Item label="40 - 49 years old " value="40" />
-                    <Select.Item label="50 - 59 years old " value="50" />
-                    <Select.Item label="60 - 64 years old " value="60" />
-                    <Select.Item label="65 years old & above " value="65" />
-                  </Select>
-
-            </NativeBaseProvider>
-      </View>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS == "ios" ? "padding" : "height"}>
+    <Text style={styles.text}> Leave the fields which you dont want to update empty and hit enter when youre done updating!</Text>
+      <StatusBar style="auto" />
 
 
-      <TouchableOpacity style={styles.loginBtn}>
-        <Text>SUBMIT</Text>
+      <KeyboardAvoidingView style={styles.inputView}>
+          <View style={styles.inputView}>
+                  <NativeBaseProvider>
+                        <Input
+                              mx="3"
+                              placeholder="username" // show the users username from props
+                              w={{
+                                base: "75%",
+                                md: "25%",
+                              }}
+                            />
+                        </NativeBaseProvider>
+                  </View>
+            </KeyboardAvoidingView>
+
+
+      <KeyboardAvoidingView style={styles.inputView}>
+        <View style={styles.inputView}>
+                          <NativeBaseProvider>
+                                <Input
+                                      mx="3"
+                                      value = "email"
+                                      editable = {false}
+                                      w={{
+                                        base: "75%",
+                                        md: "25%",
+                                      }}
+                                    />
+                          </NativeBaseProvider>
+                    </View>
+      </KeyboardAvoidingView>
+
+
+
+      <KeyboardAvoidingView style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Enter your account password..."
+          placeholderTextColor="#003f5c"
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+        />
+      </KeyboardAvoidingView>
+
+      <TouchableOpacity
+      onPress = {
+                async () =>{
+                    if(password ==='') {
+                      showMessage({message:"Please enter your password",type:'Warning'})
+                  }
+
+                  else {
+                  const response = await axios.post('https://glacial-springs-53214.herokuapp.com/login',{username:name,
+                password:password})
+                  if(username === ''){
+                    showMessage({message:"Please enter a new username",description:"You have not entered a username."})
+                  }
+
+                  else if(response.data === 'login') {
+                    axios.post('https://glacial-springs-53214.herokuapp.com/updateInfoName',{
+                    name: name,
+                    username: username,
+                    })
+                    .then(function (response) {
+                    if (response.data === "success"){
+                      showMessage({
+                          message: "success!",
+                          description: "Your information has been updated successfully",
+                          type: "success",
+                                          })
+
+                      navigation.navigate("Home", {name: username});
+                      }
+
+                      else if(response.data === "failure") {
+                      showMessage({
+                         message: "Whoops!",
+                            description: "Username has already been taken",
+                            type: "warning",
+                      })
+                      }
+
+                      })
+                    .catch(function (error) {
+                                    console.log(error);
+                                    })
+                                  }
+                    else if(response.data === "incorrect password") {
+                      showMessage({message: "Wrong password", description: "Please try again",type:'danger'})
+                    }
+                                  }
+
+                                }
+                  }
+
+      style={styles.loginBtn}
+      >
+        <Text>UPDATE USERNAME</Text>
       </TouchableOpacity>
-    </View>
+
+
+
+    </KeyboardAvoidingView>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#fffdd0",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -101,17 +161,14 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
 
-  TopinputView: {
-      backgroundColor: "#DDDDDD",
-      marginTop: 100,
-      width: "70%",
-      height: 45,
+  text: {
+      padding: 20,
       marginBottom: 20,
-      alignItems: "flex-start",
     },
 
   inputView: {
     backgroundColor: "#DDDDDD",
+    borderRadius: 30,
     width: "70%",
     height: 45,
     marginBottom: 20,
@@ -121,7 +178,7 @@ const styles = StyleSheet.create({
   TextInput: {
     height: 50,
     flex: 1,
-    padding: 5,
+    padding: 10,
     marginLeft: 20,
   },
 
@@ -141,7 +198,8 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 10,
+    marginBottom:20,
     backgroundColor: "#F05454",
   },
 
@@ -151,4 +209,3 @@ const styles = StyleSheet.create({
   marginBottom: 30,
   }
 });
-
