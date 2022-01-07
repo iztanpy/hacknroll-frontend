@@ -25,19 +25,17 @@ export default function profileScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [username, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const[iconAnimating, setIcon] = useState(false);
 
 
   return (
     <View style={styles.container}>
-    <Image style={styles.image} source={require("../assets/logo2.png")} />
       <StatusBar style="auto" />
 
       <View style={styles.inputView}>
               <TextInput
                 style={styles.TextInput}
                 placeholder="Username..."
-                placeholderTextColor="#003f5c"
+                placeholderTextColor="#black"
                 onChangeText={(username) => setUser(username)}
               />
             </View>
@@ -46,7 +44,7 @@ export default function profileScreen({ navigation }) {
         <TextInput
           style={styles.TextInput}
           placeholder="Password..."
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#black"
           secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
         />
@@ -54,7 +52,7 @@ export default function profileScreen({ navigation }) {
 
       <TouchableOpacity
       onPress = { () =>
-                          navigation.navigate('tempForget')
+                          navigation.navigate('Forget')
                           }>
         <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity>
@@ -85,21 +83,18 @@ export default function profileScreen({ navigation }) {
                       navigation.navigate("Home", {name: username});
                       }
 
-                      else if(response.data === "incorrect password") {
+                      else (response.data === "password" ){
                       showMessage({
                          message: "Incorrect password!",
-                            description: "Click on this message to proceed to reset password",
-                            type: "warning",
-                            onPress : () => {navigation.navigate("tempForget"), {name: username} }
+                            type: "warning",}
                       })
                       }
 
                       else {
                        showMessage({
                           message: "No user found!",
-                          description: "Click on this message to proceed to create an account",
                           type: "warning",
-                          onPress : () => {navigation.navigate("signup")}
+                          }
                       })
                       }
 
