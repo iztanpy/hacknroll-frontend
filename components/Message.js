@@ -9,7 +9,7 @@ const Message = ({ message, own }) => {
       paddingX={4}
       borderRadius={8}
       borderBottomRightRadius={0}
-      backgroundColor="purple.300"
+      backgroundColor="rose.200"
       alignSelf="flex-end"
     >
       <Text>{message}</Text>

@@ -21,6 +21,14 @@ import {
   removeNotification,
 } from '../../reducers/notification';
 
+import { LogBox } from 'react-native';
+
+// Ignore log notification by message
+LogBox.ignoreLogs(['Warning: ...']);
+
+//Ignore all log notifications
+LogBox.ignoreAllLogs();
+
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const [username, setUsername] = useState('');
