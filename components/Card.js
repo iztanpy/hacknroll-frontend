@@ -1,34 +1,62 @@
 import React from 'react';
 import { Box, HStack, Text, Pressable, Spacer, Flex } from 'native-base';
+import { Tag } from '../components/Tag';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
 
-export const Card = ({ title, type }) => {
+export const Card = ({ post, navigation, route }) => {
+  const { title, content, tag, likes, comments } = post;
+
+  const truncate = (str, n) => {
+    return str.length > n ? str.substr(0, n - 1) + '..' : str;
+  };
+
+  const formatDate = (date) => {
+    return moment(date).fromNow();
+  };
+
   return (
     <Pressable
       onPress={() => {
-        console.log('Hello world');
+        navigation.navigate('Post', {
+          postid: post.id,
+          post,
+        });
       }}
     >
-      <Box p="5" rounded="8" bg="violet.700">
+      <Box p="5" rounded="8" backgroundColor="warmGray.50" shadow={2}>
         <HStack alignItems="flex-start">
-          <Text fontSize={12} color="cyan.50" fontWeight="medium">
-            {type}
-          </Text>
+          <Tag content={tag} />
           <Spacer />
-          <Text fontSize={10} color="cyan.100">
-            1 month ago
+          <Text fontSize={10} color="black">
+            {formatDate(post.createdAt)}
           </Text>
         </HStack>
-        <Text color="primary.50" mt="3" fontWeight="medium" fontSize={20}>
+        <Text color="black" mt="3" fontWeight="medium" fontSize={20}>
           {title}
         </Text>
-        <Text mt="2" fontSize={14} color="cyan.100">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec
-          eleifend mauris.
+        <Text mt="2" fontSize={14} color="black">
+          {truncate(content, 130)}
         </Text>
         <Flex>
-          <Text mt="2" fontSize={12} fontWeight="medium" color="cyan.400">
+          <Text mt="2" fontSize={12} fontWeight="medium" color="black">
             Read More
           </Text>
+        </Flex>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Box marginTop={2}>
+            <Text>👍 {likes}</Text>
+          </Box>
+          <Box marginTop={2}>
+            <Text>
+              <MaterialCommunityIcons
+                name="comment-processing-outline"
+                size={24}
+                color="black"
+              />{' '}
+              {comments.length}
+            </Text>
+          </Box>
         </Flex>
       </Box>
     </Pressable>

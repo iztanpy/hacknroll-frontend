@@ -1,16 +1,33 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { NativeBaseProvider } from 'native-base';
-import {createStackNavigator} from '@react-navigation/stack'
+import { Provider } from 'react-redux';
+import { extendTheme, NativeBaseProvider } from 'native-base';
+import { createStackNavigator } from '@react-navigation/stack';
 import MainContainer from './components/navigation/MainContainer';
-import signUp from './screens/signUpScreen';
+import store from './store';
+import { LogBox } from 'react-native';
 
-const ProfStack = createStackNavigator();
+LogBox.disableYellowBox = true;
+
+const theme = extendTheme({
+  components: {
+    Input: {
+      defaultProps: {
+        _focus: {
+          style: {
+            borderColor: '#f43f5e',
+          },
+        },
+      },
+    },
+  },
+});
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <MainContainer />
+    <NativeBaseProvider theme={theme}>
+      <Provider store={store}>
+        <MainContainer />
+      </Provider>
     </NativeBaseProvider>
   );
 }

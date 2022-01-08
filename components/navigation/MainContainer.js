@@ -4,10 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 // Screens
-import chatStack from '../../screens/chatStack';
-import ProfileStack from '../../screens/ProfileStack';
-import HomeScreen from '../../screens/HomeScreen';
+import ChatScreen from '../../screens/ChatScreen';
 import { Dimensions } from 'react-native';
+import HomeStack from '../../screens/home/HomeStack';
+import ProfileStack from '../../screens/profile/ProfileStack';
 
 // Screen names
 const homeName = 'Home';
@@ -63,8 +63,8 @@ export default function MainContainer() {
           headerShown: false,
         })}
       >
-        <Tab.Screen name={homeName} component={HomeScreen} />
-        <Tab.Screen name={chatName} component={chatStack} />
+        <Tab.Screen name={homeName} component={HomeStack} />
+        <Tab.Screen name={chatName} component={ChatScreen} />
         <Tab.Screen name={profileName} component={ProfileStack} />
       </Tab.Navigator>
     </NavigationContainer>
