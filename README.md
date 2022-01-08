@@ -2,4 +2,4 @@
 
 
 
-Frontend to the sos.sg application. The frontend repository is available [here](https://github.com/sbhbenjamin/sos.sg-backend)
+Frontend to the sos.sg application. The backend repository is available [here](https://github.com/sbhbenjamin/sos.sg-backend)
