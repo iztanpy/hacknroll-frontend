@@ -12,9 +12,9 @@ const BaseTag = ({ content, color }) => {
 };
 
 export const Tag = ({ content }) => {
-  if (content === 'help') {
+  if (content === 'Advice') {
     return <BaseTag content={content} color="red.200" />;
-  } else if (content === 'anxiety') {
+  } else if (content === 'Depression') {
     return <BaseTag content={content} color="blue.200" />;
   } else {
     return <BaseTag content={content} color="green.200" />;
